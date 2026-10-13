@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lighthouse Labs</title>
+<meta name="description" content="Lighthouse Labs is an incubator that forms and builds consumer companies. Contact: lighthouse@lhlabs.co">
+<meta name="theme-color" content="#0B1420">
+<meta property="og:title" content="Lighthouse Labs">
+<meta property="og:description" content="Consumer brand incubation and company building.">
+<meta property="og:url" content="https://lhlabs.co/">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B1420'/%3E%3Cpath d='M11 10h4v13h7v3H11z' fill='%23EAF0F4'/%3E%3Ccircle cx='13' cy='6.5' r='2.5' fill='%23FFC24A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800&family=Hanken+Grotesk:wght@400;500&family=IBM+Plex+Mono&display=swap">
+<style>
+  /* Beacon: night sea; the lamp sits on the stem of the L and its beam sweeps the page every 14 s. */
+  :root { --bg:#0B1420; --ink:#EAF0F4; --muted:#8FA0B0; --lamp:#FFC24A; --rule:#22344A; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--bg); color: var(--ink); font: 400 1.05rem/1.6 "Hanken Grotesk", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+
+  .page { position: relative; overflow: hidden; min-height: 100%; display: grid; grid-template-rows: 1fr auto;
+          padding: calc(48px + env(safe-area-inset-top, 0px)) clamp(16px, 8vw, 120px) calc(28px + env(safe-area-inset-bottom, 0px)); }
+
+  /* Beam pivot: JS moves it onto the lamp; the fallback values keep it near the L if JS is off. */
+  .sweep { position: absolute; left: var(--lx, 13vw); top: var(--ly, 30vh); width: 0; height: 0; pointer-events: none; z-index: 0; }
+  .sweep::before {
+    content: ""; position: absolute; left: -150vmax; top: -150vmax; width: 300vmax; height: 300vmax;
+    background: conic-gradient(from 0deg, transparent 0deg, rgba(255,194,74,.22) 8deg, rgba(255,194,74,.05) 22deg, transparent 30deg 360deg);
+    -webkit-mask: radial-gradient(circle, #000 0 30%, transparent 70%); mask: radial-gradient(circle, #000 0 30%, transparent 70%);
+    animation: turn 14s linear infinite;
+  }
+  .sweep::after { content: ""; position: absolute; left: var(--lr-neg, -9px); top: var(--lr-neg, -9px); width: var(--ld, 18px); height: var(--ld, 18px);
+    border-radius: 50%; background: var(--lamp); box-shadow: 0 0 30px 8px rgba(255,194,74,.55); }
+  @keyframes turn { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .sweep::before { animation: none; transform: rotate(-12deg); } }
+
+  main { position: relative; z-index: 1; min-width: 0; align-self: end; padding-bottom: 6vh; display: grid; gap: 1.6rem; max-width: 60rem; }
+  h1 { margin: 0; padding-top: .45em; font: 800 min(8.5rem, calc((100vw - 2 * clamp(16px, 8vw, 120px)) / 9))/.9 "Archivo", Arial, sans-serif; font-stretch: 125%; letter-spacing: -.01em; text-transform: uppercase; }
+  .word { white-space: nowrap; }
+  .base { display: inline-block; width: 0; height: 0; vertical-align: baseline; }
+  .desc { margin: 0; font-size: clamp(1.1rem, 2.4vw, 1.5rem); font-weight: 500; }
+  .about { margin: 0; color: var(--muted); max-width: 34rem; }
+  .contact { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; align-items: baseline; border-top: 1px solid var(--rule); padding-top: 1.2rem; }
+  .label { font: .75rem/1.4 "IBM Plex Mono", ui-monospace, monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  a { color: var(--ink); font-weight: 500; text-decoration: none; border-bottom: 1px solid var(--lamp); }
+  a:hover, a:focus-visible { color: var(--lamp); outline: none; }
+  footer { position: relative; z-index: 1; display: flex; justify-content: space-between; gap: 1rem; font: .75rem "IBM Plex Mono", ui-monospace, monospace; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="page" id="page">
+  <div class="sweep" id="sweep" aria-hidden="true"></div>
+  <main>
+    <h1 id="name"><span class="word"><span id="L">L</span><span class="base" id="base"></span>ighthouse</span><br>Labs</h1>
+    <p class="desc">Consumer brand incubation and company building.</p>
+    <p class="about">Lighthouse Labs is an incubator that forms and builds consumer companies. We work with specialist partners across development, manufacturing and operations.</p>
+    <div class="contact"><span class="label">Partners and suppliers</span><a href="mailto:lighthouse@lhlabs.co">lighthouse@lhlabs.co</a></div>
+  </main>
+  <footer><span>&copy; <span id="yr">2026</span> Lighthouse Labs</span><span title="Chart notation: flashing white light, once every 14 seconds">Fl W 14s</span></footer>
+</div>
+<script>
+(function () {
+  var page = document.getElementById('page'), sweep = document.getElementById('sweep'),
+      L = document.getElementById('L'), base = document.getElementById('base');
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Find the L's vertical stem and cap height from the rendered glyph, so the lamp sits centred on the post in any font.
+  function stemMetrics(font, size) {
+    var c = document.createElement('canvas'), w = Math.ceil(size * 1.6), h = Math.ceil(size * 1.6);
+    c.width = w; c.height = h;
+    var x = c.getContext('2d');
+    x.font = font; if ('fontStretch' in x) x.fontStretch = 'expanded'; x.textBaseline = 'alphabetic'; x.fillStyle = '#000';
+    var by = Math.round(size * 1.2);
+    x.fillText('L', 0, by);
+    var m = x.measureText('L'), cap = m.actualBoundingBoxAscent || size * 0.72;
+    var row = Math.round(by - cap * 0.5), d = x.getImageData(0, row, w, 1).data, first = -1, last = -1;
+    for (var i = 0; i < w; i++) {
+      if (d[i * 4 + 3] > 128) { if (first < 0) first = i; last = i; }
+      else if (first >= 0) break;
+    }
+    if (first < 0) { first = size * 0.07; last = size * 0.27; }
+    return { cx: (first + last + 1) / 2, stem: last - first + 1, cap: cap };
+  }
+
+  function place() {
+    var cs = getComputedStyle(L), size = parseFloat(cs.fontSize);
+    var font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+    var s = stemMetrics(font, size), pr = page.getBoundingClientRect(), lr = L.getBoundingClientRect(), br = base.getBoundingClientRect();
+    var d = Math.max(12, Math.min(s.stem * 0.9, 34));
+    var x = lr.left - pr.left + s.cx, capTop = br.top - pr.top - s.cap;
+    var y = capTop - d / 2 - Math.max(4, s.stem * 0.25);
+    sweep.style.setProperty('--lx', x + 'px');
+    sweep.style.setProperty('--ly', y + 'px');
+    sweep.style.setProperty('--ld', d + 'px');
+    sweep.style.setProperty('--lr-neg', (-d / 2) + 'px');
+  }
+
+  place();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+  window.addEventListener('resize', place);
+})();
+</script>
+</body>
+</html>
